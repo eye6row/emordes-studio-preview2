@@ -30,7 +30,8 @@ function header(){
    <a href="home.html#journal">Journal</a>
   </nav>
   <div class="util mono">
-   <a href="catalog.html">Bag (0)</a>
+   <button type="button" class="lights mono" id="lights" aria-pressed="false" title="Lights on/off"><i></i><span>Lights</span></button>
+   <button type="button" class="cartbtn mono" id="cartBtn" aria-controls="cart">Cart [<span id="cc">0</span>]</button>
    <span class="lang"><b>EN</b> / <span>TL</span></span>
    <button class="burger mono" aria-expanded="false" aria-controls="nav" id="burger">Menu</button>
   </div></div>
@@ -96,16 +97,6 @@ function initHome(){
  // rail
  const rail=document.getElementById('rail');
  document.querySelectorAll('[data-rail]').forEach(b=>b.addEventListener('click',()=>rail.scrollBy({left:(+b.dataset.rail)*rail.clientWidth*.6,behavior:'smooth'})));
-}
-
-function initCatalog(){
- const g=document.getElementById('grid'),q=new URLSearchParams(location.search);
- let cat=q.get('c')||'All';const term=(q.get('q')||'').toLowerCase();
- const render=()=>{g.innerHTML=PRODUCTS.filter(p=>(cat==='All'||p.cat===cat)&&(!term||JSON.stringify(p).toLowerCase().includes(term))).map(itemCard).join('')||'<p class="mono" style="background:#fff;padding:20px;grid-column:1/-1">No results</p>';
-  wirePlaceholders(g);document.getElementById('count').textContent=g.querySelectorAll('.item').length+' items';
-  document.querySelectorAll('.filters button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===cat))};
- document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{cat=b.dataset.c;render()}));
- render();
 }
 
 function initProduct(){
