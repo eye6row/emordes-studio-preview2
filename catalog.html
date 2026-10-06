@@ -4,16 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shop · Emordes Studio</title>
+<script>try{if(localStorage.ems_lights==='off')document.documentElement.classList.add('off')}catch(e){}</script>
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shop.css">
 <script src="app.js" defer></script>
+<script src="shop.js" defer></script>
 </head>
 <body data-page="catalog">
-<main id="main">
- <div class="pagehead"><div><p class="mono crumb"><a href="home.html">Home</a> / Shop</p><h1>Catalog</h1></div><span class="mono" id="count"></span></div>
- <div class="filters" role="group" aria-label="Filter by category">
-  <button data-c="All">All</button><button data-c="Textiles">Textiles</button><button data-c="Apparel">Apparel</button><button data-c="Objects">Objects</button>
+<main id="main" class="shop">
+ <div class="shead">
+  <div><p class="mono crumb"><a href="home.html">Home</a> / Shop</p><h1>The <em>Shop</em></h1></div>
+  <p class="mono smeta"><span id="count"></span> · Hand-loomed in Ilocos, finished in SF</p>
  </div>
- <div class="grid5" id="grid"></div>
+ <nav class="subcats" id="subcats" aria-label="Shop categories"></nav>
+ <div class="bar2" id="bar2">
+  <div class="fx" id="fx"></div>
+  <div class="bar2r">
+   <label class="mono sortl">Sort <select id="sort"><option value="feat">Featured</option><option value="new">Newest</option><option value="lo">Price low–high</option><option value="hi">Price high–low</option></select></label>
+   <div class="view mono" role="group" aria-label="Products per row" id="view"></div>
+  </div>
+ </div>
+ <div class="chips" id="chips"></div>
+ <div class="pgrid" id="grid"></div>
 </main>
+<aside class="drawer" id="filters" aria-label="All filters" hidden><div class="dh"><b class="mono">All filters</b><button class="x mono" data-close>Close ✕</button></div><div class="db" id="fbody"></div><div class="df"><button class="mono ghost" id="fclear">Clear all</button><button class="mono solid" data-close>Show <span id="fcount"></span> results</button></div></aside>
+<div class="scrim" id="scrim" hidden></div>
 </body>
 </html>
