@@ -16,6 +16,7 @@ const EXTRA={
 const SHOP=PRODUCTS.map((p,i)=>({...p,...EXTRA[p.id],img:POOL[i],alt:POOL[(i+3)%POOL.length]}));
 const SUBS=[['all','All',POOL[0]],['new','New',POOL[4]],['tees','Tees',POOL[2]],['woven','Woven / Binakol',POOL[1]],['acc','Accessories',POOL[8]],['archive','Archive',POOL[9]]];
 const PRICES=[['u100','Under $100',p=>p<100],['100','$100–$300',p=>p>=100&&p<=300],['300','$300+',p=>p>300]];
+const TPIDS=[3,5];
 const money=n=>'$'+n;
 const $=s=>document.querySelector(s);
 
@@ -86,6 +87,7 @@ function initCatalog(){
   <div class="qa"><button class="qadd mono" data-add="${p.id}">Add – ${money(p.price)}</button>
    <div class="szs" hidden>${p.sizes.map(s=>`<button class="mono" data-size="${s}">${s}</button>`).join('')}<button class="mono xs" data-cancel aria-label="Cancel">✕</button></div></div>
   <div class="ct"><a href="product.html?id=${p.id}"><b>${p.name}</b></a><span>${money(p.price)}</span></div>
+  ${TPIDS.includes(p.id)?`<a class="mono tpl" href="techpack.html?id=${p.id}" style="color:var(--mute);border-bottom:1px solid currentColor">Tech Pack ↗</a>`:""}
   <div class="sw" role="group" aria-label="Colors">${p.colors.map((c,j)=>`<button class="swb" data-c="${c}" aria-pressed="${j===0}" title="${COLORS[c][0]}" style="background:${COLORS[c][1]}"></button>`).join('')}<span class="mono">${p.colors.length>1?p.colors.length+' colors':COLORS[p.colors[0]][0]}</span></div>
  </article>`;
  const media=`<a class="tile media" href="?sub=woven"><div class="kb"><img src="${POOL[5]}" alt=""><img src="${POOL[0]}" alt=""><img src="${POOL[2]}" alt=""></div>
