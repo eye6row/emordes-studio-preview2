@@ -38,7 +38,8 @@ const Cart={
 };
 function closeDrawers(){document.body.classList.remove('cart-open','filters-open');setTimeout(()=>{['#cart','#filters','#scrim'].forEach(s=>{const e=$(s);if(e)e.hidden=true})},300)}
 
-function initShopChrome(){
+function markNav(){const pg=document.body.dataset.page,map={catalog:'catalog.html',product:'catalog.html',techpack:'techpack.html'},h=map[pg];if(!h)return;document.querySelectorAll('.nav a').forEach(a=>{if(a.getAttribute('href')===h)a.setAttribute('aria-current','page')})}
+function initShopChrome(){markNav();
  // lights
  const L=$('#lights'),sync=()=>{const off=document.documentElement.classList.contains('off');L.setAttribute('aria-pressed',off);L.querySelector('span').textContent=off?'Lights off':'Lights on'};
  L.addEventListener('click',()=>{const off=document.documentElement.classList.toggle('off');try{localStorage.ems_lights=off?'off':'on'}catch(e){}sync()});sync();
@@ -79,22 +80,31 @@ function initCatalog(){
   if(st.sort==='lo')r=[...r].sort((a,b)=>a.price-b.price);if(st.sort==='hi')r=[...r].sort((a,b)=>b.price-a.price);if(st.sort==='new')r=[...r].sort((a,b)=>(b.isNew||0)-(a.isNew||0));
   return r};
 
- const card=(p,i)=>`<article class="pc" data-id="${p.id}" style="--d:${i*45}ms">
-  <a class="cm" href="product.html?id=${p.id}"><span class="spot"></span>
-   <img class="i1" src="${p.img}" alt="${p.name}" ${i<4?'':'loading="lazy"'} style="filter:${COLORS[p.colors[0]][2]}">
-   <img class="i2" src="${p.alt}" alt="" loading="lazy">
-   ${p.isNew?'<span class="flag mono">New</span>':''}</a>
-  <div class="qa"><button class="qadd mono" data-add="${p.id}">Add – ${money(p.price)}</button>
-   <div class="szs" hidden>${p.sizes.map(s=>`<button class="mono" data-size="${s}">${s}</button>`).join('')}<button class="mono xs" data-cancel aria-label="Cancel">✕</button></div></div>
-  <div class="ct"><a href="product.html?id=${p.id}"><b>${p.name}</b></a><span>${money(p.price)}</span></div>
-  ${TPIDS.includes(p.id)?`<a class="mono tpl" href="techpack.html?id=${p.id}" style="color:var(--mute);border-bottom:1px solid currentColor">Tech Pack ↗</a>`:""}
-  <div class="sw" role="group" aria-label="Colors">${p.colors.map((c,j)=>`<button class="swb" data-c="${c}" aria-pressed="${j===0}" title="${COLORS[c][0]}" style="background:${COLORS[c][1]}"></button>`).join('')}<span class="mono">${p.colors.length>1?p.colors.length+' colors':COLORS[p.colors[0]][0]}</span></div>
- </article>`;
- const media=`<a class="tile media" href="?sub=woven"><div class="kb"><img src="${POOL[5]}" alt=""><img src="${POOL[0]}" alt=""><img src="${POOL[2]}" alt=""></div>
+ const status=p=>p.isNew?['New','new']:p.sub.includes('archive')?['Archive','archive']:['Ongoing','ongoing'];
+ const SUBL={woven:'Woven',tees:'Tees',acc:'Accessories',archive:'Archive'};
+ const card=(p,i)=>{const [sl,sc]=status(p);return `<article class="pc" data-id="${p.id}" style="--d:${i*45}ms"><div class="fl">
+  <div class="ff front"><div class="ch"><span class="mono no">No. ${pad(p.id)}</span><span class="mono stt ${sc}">${sl}</span></div>
+   <button class="cm" type="button" data-flip aria-label="Flip ${p.name} for details"><span class="spot"></span>
+    <img class="i1" src="${p.img}" alt="${p.name}" ${i<4?'':'loading="lazy"'} style="filter:${COLORS[p.colors[0]][2]}">
+    <img class="i2" src="${p.alt}" alt="" loading="lazy"><span class="flipcue mono">Flip ↻</span></button>
+   <div class="ct"><b>${p.name}</b><span>${money(p.price)}</span></div>
+   <ul class="tags mono">${[p.cat,...p.sub.map(s=>SUBL[s]||s),p.fabric].map(t=>`<li>${t}</li>`).join('')}</ul>
+   <button class="flipb mono" type="button" data-flip>Details ↻</button></div>
+  <div class="ff back"><div class="ch"><span class="mono stt ${sc}">${sl}</span><button class="flipb mono" type="button" data-flip>Back ↻</button></div>
+   <div class="bd"><h4>${p.name}</h4>
+    <p>${p.fn}, ${p.weave.toLowerCase()} in ${p.fabric.toLowerCase()}. Finished by hand in ${p.origin}. Placeholder copy.</p>
+    <dl class="mono"><dt>Materials</dt><dd>${p.comp}</dd><dt>Weight</dt><dd>${p.weight}</dd><dt>Sizes</dt><dd>${p.sizes.join(' / ')}</dd><dt>Price</dt><dd>${money(p.price)}</dd></dl>
+    <div class="sw" role="group" aria-label="Colors">${p.colors.map((c,j)=>`<button class="swb" data-c="${c}" aria-pressed="${j===0}" title="${COLORS[c][0]}" style="background:${COLORS[c][1]}"></button>`).join('')}<span class="mono">${p.colors.length>1?p.colors.length+' colors':COLORS[p.colors[0]][0]}</span></div></div>
+   <div class="acts"><div class="qa"><button class="qadd mono" data-add="${p.id}">Add – ${money(p.price)}</button>
+    <div class="szs" hidden>${p.sizes.map(s=>`<button class="mono" data-size="${s}">${s}</button>`).join('')}<button class="mono xs" data-cancel aria-label="Cancel">✕</button></div></div>
+    <div class="lnk mono"><a href="product.html?id=${p.id}">Open page →</a>${TPIDS.includes(p.id)?`<a href="techpack.html?id=${p.id}">Tech Pack ↗</a>`:''}</div></div></div>
+ </div></article>`};
+ const WB=t=>`<div class="wbar"><i></i><i></i><i></i><span class="mono">${t}</span></div>`;
+ const media=`<a class="tile media" href="?sub=woven">${WB('film_01.mov')}<div class="kb"><img src="${POOL[5]}" alt=""><img src="${POOL[0]}" alt=""><img src="${POOL[2]}" alt=""></div>
   <span class="mono live">● Loop</span><div class="mcap"><span class="mono">Film 01</span><b>Binakol, in motion</b></div></a>`;
- const edit=[`<a class="tile ed" href="?sub=woven"><img src="${POOL[6]}" alt="" loading="lazy"><div><span class="mono">Journal · Craft</span><h3>The whirlpool that <em>wards off</em> spirits</h3><p>Binakol is woven on Ilocano floor looms in optical spirals. We cut it into everyday form.</p><span class="mono u">Shop the weave →</span></div></a>`,
-  `<a class="tile ed rev" href="?sub=archive"><img src="${POOL[7]}" alt="" loading="lazy"><div><span class="mono">Lookbook · Sirko</span><h3>Circus, ritual, <em>runway</em></h3><p>Pieces from the archive, worn the way they were made to move.</p><span class="mono u">See the archive →</span></div></a>`];
- const banner=`<section class="camp"><img src="${POOL[2]}" alt="" loading="lazy"><div class="cc"><span class="mono">Campaign · FW26</span><h2>We weave the story.<br><em>You wear the culture.</em></h2><a class="mono" href="?sub=new">Shop new arrivals</a></div></section>`;
+ const edit=[`<a class="tile ed" href="?sub=woven">${WB('journal_craft.txt')}<img src="${POOL[6]}" alt="" loading="lazy"><div><span class="mono">Journal · Craft</span><h3>The whirlpool that <em>wards off</em> spirits</h3><p>Binakol is woven on Ilocano floor looms in optical spirals. We cut it into everyday form.</p><span class="mono u">Shop the weave →</span></div></a>`,
+  `<a class="tile ed rev" href="?sub=archive">${WB('lookbook_sirko.jpg')}<img src="${POOL[7]}" alt="" loading="lazy"><div><span class="mono">Lookbook · Sirko</span><h3>Circus, ritual, <em>runway</em></h3><p>Pieces from the archive, worn the way they were made to move.</p><span class="mono u">See the archive →</span></div></a>`];
+ const banner=`<section class="camp">${WB('campaign_fw26.jpg')}<img src="${POOL[2]}" alt="" loading="lazy"><div class="cc"><span class="mono">Campaign · FW26</span><h2>We weave the story.<br><em>You wear the culture.</em></h2><a class="mono" href="?sub=new">Shop new arrivals</a></div></section>`;
 
  const render=()=>{
   const g=$('#grid'),r=list(),cols=mob()?st.mcols:st.cols;
@@ -118,6 +128,7 @@ function initCatalog(){
  $('#fclear').addEventListener('click',clear);
  document.addEventListener('click',e=>{
   const t=e.target;
+  const fb=t.closest('[data-flip]');if(fb){const pc=fb.closest('.pc');pc.classList.toggle('flipped');return}
   const sc=t.closest('.sc');if(sc){st.sub=sc.dataset.sub;history.replaceState(0,'','?sub='+st.sub);render();return}
   const v=t.closest('[data-v]');if(v){mob()?(st.mcols=+v.dataset.v,localStorage.ems_mcols=st.mcols):(st.cols=+v.dataset.v,localStorage.ems_cols=st.cols);render();return}
   const rm=t.closest('[data-rm]');if(rm){const[k,val]=rm.dataset.rm.split(':');st[k].delete(val);render();return}
