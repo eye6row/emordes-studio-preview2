@@ -27,6 +27,7 @@ function header(){
    <button type="button" aria-expanded="false" aria-controls="mega" id="megaBtn">Work</button>
    <a href="catalog.html?c=Textiles">Textiles</a>
    <a href="catalog.html">Shop</a>
+   <a href="techpack.html">Tech Pack</a>
    <a href="home.html#journal">Journal</a>
   </nav>
   <div class="util mono">
@@ -48,7 +49,7 @@ function header(){
 function footer(){
  return `<footer class="ftr">
   <div><img src="assets/wordmark.png" alt="Emordes Studio"><p class="mono" style="color:#888;margin-top:16px">Interdisciplinary creative house · San Francisco</p></div>
-  <div><h4 class="mono">Studio</h4><ul><li><a href="home.html#works">Work</a></li><li><a href="catalog.html">Shop</a></li><li><a href="home.html#journal">Journal</a></li></ul></div>
+  <div><h4 class="mono">Studio</h4><ul><li><a href="home.html#works">Work</a></li><li><a href="catalog.html">Shop</a></li><li><a href="techpack.html">Tech Pack</a></li><li><a href="home.html#journal">Journal</a></li></ul></div>
   <div><h4 class="mono">Worlds</h4><ul><li><a href="https://gaje777.emordes.studio">GAJE 777 ↗</a></li><li><a href="https://izlab.emordes.studio">Laboratory ↗</a></li></ul></div>
   <div><h4 class="mono">Contact</h4><ul><li><a href="mailto:jh@emordes.studio">jh@emordes.studio</a></li></ul></div>
   <div class="bar mono"><span>© 2026 Emordes Studio</span><span>Preview v2 · not live</span></div>
@@ -117,6 +118,7 @@ function initProduct(){
   <div class="mono">Size</div>
   <div class="sizes" role="group" aria-label="Size">${['XS','S','M','L','XL','OS'].slice(p.cat==='Apparel'?0:5).map((s,i)=>`<button type="button" aria-pressed="${i===0}">${s}</button>`).join('')}</div>
   <a class="add" id="add" href="#">Add to Bag</a>
+  ${[3,5].includes(p.id)?`<a class="mono" id="tpl" href="techpack.html?id=${p.id}" style="display:inline-block;margin-top:12px;border-bottom:1px solid currentColor">Tech Pack ↗</a>`:""}
   <p class="note mono">Made to order · inquiries via jh@emordes.studio</p></div>`;
  wirePlaceholders(document.getElementById('pdp'));
  const sz=[...document.querySelectorAll('.sizes button')];
