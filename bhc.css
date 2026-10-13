@@ -1,0 +1,9 @@
+.bhc{text-align:center;color:#111;font-family:Helvetica,"Helvetica Neue",Arial,sans-serif}
+.bhc-meta{display:flex;justify-content:space-between;width:min(64vw,calc(var(--bhH,260px)*3.3));margin:0 auto 14px;font:400 10px/1 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.12em;color:#666}
+.bhc-vp{position:relative;height:var(--bhH,260px);overflow:hidden;margin:0}
+.bhc-s{position:absolute;top:0;height:100%;border-radius:9999px;overflow:hidden;background:#111;display:block;transition:left 1.1s cubic-bezier(.65,0,.25,1),width 1.1s cubic-bezier(.65,0,.25,1),opacity .4s}
+.bhc-s img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.1s cubic-bezier(.65,0,.25,1)}
+.bhc-s canvas{width:100%;height:100%;display:block}
+.bhc-s:focus-visible{outline:3px solid #111;outline-offset:3px}
+.bhc-t{margin-top:20px;font:600 clamp(15px,1.7vw,22px)/1 Helvetica,Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;min-height:22px}
+@media(max-width:760px){.bhc-meta{width:78vw}}
