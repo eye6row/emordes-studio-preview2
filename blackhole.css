@@ -69,3 +69,5 @@ h1 em,h2 em,h3 em{font-style:normal}
 .cm{border-radius:9999px 9999px 9999px 9999px}
 .tile.media .live{left:50%;transform:translateX(-50%);top:8%}
 .tile.media .mcap{text-align:center;left:0;right:0}
+
+.bh{--bhH:clamp(140px,22vw,300px);padding:6px 0 26px;overflow:hidden}
