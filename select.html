@@ -3,78 +3,19 @@
 <title>Select | Emordes Studio</title>
 <style>
 *{box-sizing:border-box;margin:0}
-html,body{min-height:100%}
 body{background:#F6F6F6;color:#111;font-family:Helvetica,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-.top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;font:700 11px/1 Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#888}
+.top{display:flex;justify-content:space-between;padding:20px 28px;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:#666}
 .top a{color:#111;text-decoration:none}.top a:hover{text-decoration:underline}
-.top b{color:#111}
-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 24px 24px;gap:22px}
-h1{font:400 clamp(28px,4vw,52px)/1 "Times New Roman",Times,serif;text-align:center;letter-spacing:-.02em}
-.row{display:flex;gap:14px;height:min(62vh,560px)}
-.tile{position:relative;flex:1 1 0;border-radius:9999px;overflow:hidden;background:#000;color:#fff;text-decoration:none;transition:flex-grow .8s cubic-bezier(.2,.8,.2,1);display:block;min-width:0;border:1px solid #111}
-.row:hover .tile{flex-grow:.7}
-.row .tile:hover,.row .tile:focus-visible{flex-grow:2.6}
-.tile canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.tile .lbl{position:absolute;left:0;right:0;bottom:7%;text-align:center;font:700 15px/1.1 Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
-.tile .idx{position:absolute;left:0;right:0;top:6%;text-align:center;font:700 10px/1 Helvetica,Arial,sans-serif;letter-spacing:.14em;color:#bbb}
-.tile .sub{position:absolute;left:0;right:0;bottom:3.5%;text-align:center;font:400 12px/1 "Times New Roman",serif;font-style:italic;color:#ddd;opacity:0;transition:opacity .4s}
-.tile:hover .sub,.tile:focus-visible .sub{opacity:1}
-.tile:focus-visible{outline:3px solid #1C45FF;outline-offset:3px}
-.cap{text-align:center;font:700 13px/1 Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;min-height:14px}
-@media(max-width:760px){
- main{padding:0 16px 20px;justify-content:flex-start;gap:16px}
- .row{flex-direction:column;height:auto}
- .tile{flex:none;height:22vh;min-height:130px}
- .row:hover .tile,.row .tile:hover{flex-grow:0}
- .tile .sub{opacity:1}
-}
-@media(prefers-reduced-motion:reduce){.tile{transition:none}}
-</style></head><body>
-<div class="top"><a href="home.html">&larr; Emordes Studio</a><span><b id="cnt">001</b> / 004</span><a href="catalog.html">Shop</a></div>
-<main id="main">
-<h1>Choose a door</h1>
-<div class="row">
- <a class="tile" href="catalog.html" data-i="0"><canvas></canvas><span class="idx">001</span><span class="lbl">Shop</span><span class="sub">Garments and objects</span></a>
- <a class="tile" href="https://izlab.emordes.studio" data-i="1"><canvas></canvas><span class="idx">002</span><span class="lbl">Laboratory</span><span class="sub">Textile experiments</span></a>
- <a class="tile" href="#maison" data-i="2" id="maison"><canvas></canvas><span class="idx">003</span><span class="lbl">The Maison</span><span class="sub">Coming soon</span></a>
- <a class="tile" href="https://www.emordes.studio/archive" data-i="3"><canvas></canvas><span class="idx">004</span><span class="lbl">Gallery</span><span class="sub">The archive</span></a>
-</div>
-<p class="cap" id="cap" aria-live="polite">Hover a door</p>
-</main>
+main{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:6vh;--bhH:clamp(150px,27vw,340px)}
+.enter{display:block;margin:22px auto 0;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:#111;text-decoration:none;border:1px solid #111;border-radius:9999px;padding:10px 20px}
+.enter:hover{background:#111;color:#F6F6F6}
+.enter:focus-visible{outline:3px solid #111;outline-offset:3px}
+</style><link rel="stylesheet" href="bhc.css"></head><body>
+<div class="top"><a href="home.html">Emordes Studio</a><span>Select a door</span><a href="catalog.html">Shop</a></div>
+<main id="main"><div id="car"></div><a class="enter" id="enter" href="catalog.html">Enter</a></main>
+<script src="bhc.js"></script>
 <script>
-(function(){
-var tiles=[].slice.call(document.querySelectorAll('.tile')),cap=document.getElementById('cap'),cnt=document.getElementById('cnt');
-var hues=[[255,70,50],[255,190,60],[190,60,255],[60,160,255]];
-var names=['Shop','Laboratory','The Maison, coming soon','Gallery'];
-var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-var dpr=Math.min(devicePixelRatio||1,2);
-var items=tiles.map(function(t,i){var c=t.querySelector('canvas');var stars=[];for(var k=0;k<90;k++)stars.push({a:Math.random()*6.283,r:.12+Math.random()*.9,s:Math.random()*.6+.2});return{c:c,x:c.getContext('2d'),w:0,h:0,hue:hues[i],stars:stars,seed:i*1.7}});
-function size(it){var r=it.c.getBoundingClientRect();it.w=Math.max(1,r.width*dpr);it.h=Math.max(1,r.height*dpr);it.c.width=it.w;it.c.height=it.h}
-function draw(it,t){var x=it.x,w=it.w,h=it.h;if(!w)return;x.fillStyle='#000';x.fillRect(0,0,w,h);
- var cx=w/2,cy=h*.46,R=Math.min(w,h)*.5,ph=(t/6000+it.seed)%1;
- var c=it.hue;
- // loop: rings contract toward horizon, phase 0..1 seamless
- for(var n=0;n<14;n++){var f=((n+ph*1)/14);var rr=R*(1.35-f*1.1);if(rr<R*.2)continue;var al=Math.sin(f*Math.PI)*.55;
-  x.save();x.translate(cx,cy);x.scale(1,.32);x.beginPath();x.arc(0,0,rr,0,6.283);x.lineWidth=1.5*dpr+f*3*dpr;x.strokeStyle='rgba('+c[0]+','+c[1]+','+c[2]+','+al+')';x.stroke();x.restore();}
- // stars spiraling in
- for(var i=0;i<it.stars.length;i++){var s=it.stars[i];var rp=((s.r-ph*s.s)%1+1)%1;var ang=s.a+(1-rp)*3.2+ph*6.283;var rad=R*(.2+rp*1.1);
-  var px=cx+Math.cos(ang)*rad,py=cy+Math.sin(ang)*rad*.5;x.fillStyle='rgba(255,255,255,'+(.15+rp*.7)+')';x.fillRect(px,py,1.4*dpr,1.4*dpr)}
- // lensing halo + hole
- var g=x.createRadialGradient(cx,cy,R*.18,cx,cy,R*.5);g.addColorStop(0,'rgba('+c[0]+','+c[1]+','+c[2]+',.9)');g.addColorStop(.35,'rgba('+c[0]+','+c[1]+','+c[2]+',.25)');g.addColorStop(1,'rgba(0,0,0,0)');
- x.fillStyle=g;x.beginPath();x.arc(cx,cy,R*.5,0,6.283);x.fill();
- x.fillStyle='#000';x.beginPath();x.arc(cx,cy,R*.2,0,6.283);x.fill();
- x.strokeStyle='rgba(255,255,255,.85)';x.lineWidth=1.5*dpr;x.beginPath();x.arc(cx,cy,R*.2,0,6.283);x.stroke();
- // bottom fade for label
- var f2=x.createLinearGradient(0,h*.72,0,h);f2.addColorStop(0,'rgba(0,0,0,0)');f2.addColorStop(1,'rgba(0,0,0,.85)');x.fillStyle=f2;x.fillRect(0,h*.72,w,h*.28);}
-var vis=true;
-function loop(t){if(vis)items.forEach(function(it){draw(it,t)});if(!reduce)requestAnimationFrame(loop)}
-function resizeAll(){items.forEach(size);if(reduce)items.forEach(function(it){draw(it,0)})}
-resizeAll();
-if(window.ResizeObserver){var ro=new ResizeObserver(function(){resizeAll()});tiles.forEach(function(t){ro.observe(t)})}
-addEventListener('resize',resizeAll);
-document.addEventListener('visibilitychange',function(){vis=!document.hidden});
-requestAnimationFrame(loop);
-tiles.forEach(function(t,i){function on(){cap.textContent=names[i];cnt.textContent=('00'+(i+1)).slice(-3)}t.addEventListener('mouseenter',on);t.addEventListener('focus',on)});
-document.getElementById('maison').addEventListener('click',function(e){e.preventDefault();cap.textContent='The Maison opens soon'});
-})();
+var S=[{title:'Shop',img:'images/hero-01.jpg',href:'catalog.html'},{title:'Laboratory',img:'images/hero-02.jpg',href:'https://izlab.emordes.studio'},{title:'The Maison',soon:true,href:'#maison'},{title:'Gallery',img:'images/hero-03.jpg',href:'https://www.emordes.studio/archive'}];
+var en=document.getElementById('enter');
+BHC(document.getElementById('car'),S,{onchange:function(i,s){en.textContent=s.soon?'Coming soon':'Enter '+s.title;en.href=s.soon?'#maison':s.href;if(s.soon){en.onclick=function(e){e.preventDefault()}}else en.onclick=null}});
 </script></body></html>
