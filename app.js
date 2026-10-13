@@ -27,6 +27,7 @@ function header(){
    <button type="button" aria-expanded="false" aria-controls="mega" id="megaBtn">Work</button>
    <a href="catalog.html?c=Textiles">Textiles</a>
    <a href="catalog.html">Shop</a>
+   <a href="select.html">Enter</a>
    <a href="techpack.html">Tech Pack</a>
    <a href="home.html#journal">Journal</a>
   </nav>
