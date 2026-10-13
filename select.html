@@ -3,19 +3,54 @@
 <title>Select | Emordes Studio</title>
 <style>
 *{box-sizing:border-box;margin:0}
-body{background:#F6F6F6;color:#111;font-family:Helvetica,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-.top{display:flex;justify-content:space-between;padding:20px 28px;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:#666}
+html,body{height:100%}
+body{background:#F6F6F6;color:#111;font-family:Helvetica,"Helvetica Neue",Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+.top{flex:none;display:flex;justify-content:space-between;padding:14px 22px;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:#666;border-bottom:1px solid #111}
 .top a{color:#111;text-decoration:none}.top a:hover{text-decoration:underline}
-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:6vh;--bhH:clamp(150px,27vw,340px)}
-.enter{display:block;margin:22px auto 0;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:#111;text-decoration:none;border:1px solid #111;border-radius:9999px;padding:10px 20px}
-.enter:hover{background:#111;color:#F6F6F6}
-.enter:focus-visible{outline:3px solid #111;outline-offset:3px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:var(--c1,1fr) var(--c2,1fr);grid-template-rows:var(--r1,1fr) var(--r2,1fr);transition:grid-template-columns .9s cubic-bezier(.65,0,.25,1),grid-template-rows .9s cubic-bezier(.65,0,.25,1)}
+main[data-h="0"]{--c1:1.4fr;--c2:.8fr;--r1:1.4fr;--r2:.8fr}
+main[data-h="1"]{--c1:.8fr;--c2:1.4fr;--r1:1.4fr;--r2:.8fr}
+main[data-h="2"]{--c1:1.4fr;--c2:.8fr;--r1:.8fr;--r2:1.4fr}
+main[data-h="3"]{--c1:.8fr;--c2:1.4fr;--r1:.8fr;--r2:1.4fr}
+.q{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:0;overflow:hidden;color:#111;text-decoration:none;border-right:1px solid #111;border-bottom:1px solid #111;--bhH:clamp(60px,20vh,230px);transition:background .5s,color .5s;padding:10px 0}
+.q:nth-child(2n){border-right:0}.q:nth-child(n+3){border-bottom:0}
+.q:hover,.q:focus-visible,.q.hot{background:#111;color:#F6F6F6}
+.q:hover .bhc,.q.hot .bhc,.q:focus-visible .bhc{color:#F6F6F6}
+.q:hover .bhc-meta,.q.hot .bhc-meta,.q:focus-visible .bhc-meta{color:#aaa}
+.q:focus-visible{outline:3px solid #1C45FF;outline-offset:-6px}
+.q .bhc-t{margin-top:12px;font-size:clamp(11px,1.3vw,18px)}
+.q .bhc-meta{margin-bottom:10px}
+.q:hover .go,.q.hot .go,.q:focus-visible .go{color:#F6F6F6}
+.go{position:absolute;right:16px;bottom:12px;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;opacity:0;transition:opacity .4s}
+.q:hover .go,.q.hot .go,.q:focus-visible .go{opacity:1}
+.no{position:absolute;left:16px;top:12px;font:400 10px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;color:#888}
+@media(max-width:600px){
+ main{grid-template-columns:1fr;grid-template-rows:repeat(4,1fr)!important}
+ main[data-h]{--c1:1fr;--c2:1fr}
+ .q{--bhH:clamp(48px,13vh,100px);border-right:0!important;border-bottom:1px solid #111!important;padding:6px 0}
+ .q:last-child{border-bottom:0!important}
+ .q .bhc-meta{margin-bottom:6px;font-size:9px}.q .bhc-t{margin-top:8px}
+ .go{opacity:1;bottom:8px;right:12px}.no{top:8px;left:12px}
+}
+@media(prefers-reduced-motion:reduce){main{transition:none}}
 </style><link rel="stylesheet" href="bhc.css"></head><body>
 <div class="top"><a href="home.html">Emordes Studio</a><span>Select a door</span><a href="catalog.html">Shop</a></div>
-<main id="main"><div id="car"></div><a class="enter" id="enter" href="catalog.html">Enter</a></main>
+<main id="main">
+ <a class="q" href="catalog.html" data-i="0" aria-label="Shop"><span class="no">001</span><div class="car"></div><span class="go">Enter &rarr;</span></a>
+ <a class="q" href="https://izlab.emordes.studio" data-i="1" aria-label="Laboratory"><span class="no">002</span><div class="car"></div><span class="go">Enter &rarr;</span></a>
+ <a class="q" href="#maison" data-i="2" id="maison" aria-label="The Maison, coming soon"><span class="no">003</span><div class="car"></div><span class="go">Coming soon</span></a>
+ <a class="q" href="https://www.emordes.studio/archive" data-i="3" aria-label="Gallery"><span class="no">004</span><div class="car"></div><span class="go">Enter &rarr;</span></a>
+</main>
 <script src="bhc.js"></script>
 <script>
-var S=[{title:'Shop',img:'images/hero-01.jpg',href:'catalog.html'},{title:'Laboratory',img:'images/hero-02.jpg',href:'https://izlab.emordes.studio'},{title:'The Maison',soon:true,href:'#maison'},{title:'Gallery',img:'images/hero-03.jpg',href:'https://www.emordes.studio/archive'}];
-var en=document.getElementById('enter');
-BHC(document.getElementById('car'),S,{onchange:function(i,s){en.textContent=s.soon?'Coming soon':'Enter '+s.title;en.href=s.soon?'#maison':s.href;if(s.soon){en.onclick=function(e){e.preventDefault()}}else en.onclick=null}});
+var D=[{t:'Shop',im:['work-03','work-04','work-05','work-06']},{t:'Laboratory',im:['work-07','work-08','hero-02','work-02']},{t:'The Maison',im:['','work-01','','work-02']},{t:'Gallery',im:['work-01','work-05','work-08','work-04']}];
+var qs=[].slice.call(document.querySelectorAll('.q')),mn=document.getElementById('main');
+qs.forEach(function(q,k){var d=D[k],sl=d.im.map(function(n){return n?{title:d.t,img:'images/'+n+'.jpg'}:{title:d.t}});
+ BHC(q.querySelector('.car'),sl,{prefix:'00'+(k+1),keys:false,hold:1700+k*350,delay:k*400});
+ function on(){mn.dataset.h=k;qs.forEach(function(e){e.classList.remove('hot')});q.classList.add('hot')}
+ q.addEventListener('mouseenter',on);q.addEventListener('focus',on);
+ q.addEventListener('mouseleave',function(){delete mn.dataset.h;q.classList.remove('hot')});
+ q.addEventListener('blur',function(){delete mn.dataset.h;q.classList.remove('hot')});
+ q.addEventListener('click',function(e){if(k===2)e.preventDefault()});
+});
 </script></body></html>
